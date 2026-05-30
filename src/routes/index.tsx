@@ -1,5 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Mail, Phone, MapPin, Users, Award, Code2, ArrowRight } from "lucide-react";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Users,
+  Award,
+  Code2,
+  ArrowRight,
+  Briefcase,
+  Layers,
+  Wrench,
+  Bot,
+  type LucideIcon,
+} from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -19,6 +32,45 @@ export const Route = createFileRoute("/")({
   }),
   component: Index,
 });
+
+function TeamMemberCard({
+  icon: Icon,
+  role,
+  name,
+  text,
+  featured = false,
+}: {
+  icon: LucideIcon;
+  role: string;
+  name: string;
+  text: string;
+  featured?: boolean;
+}) {
+  return (
+    <div
+      className={`flex flex-col rounded-2xl border border-border bg-card p-8 ${
+        featured ? "border-primary/30 bg-secondary/20 md:p-12" : ""
+      }`}
+    >
+      <Icon className="h-6 w-6 text-primary" strokeWidth={1.5} />
+      <p className="mt-6 text-xs uppercase tracking-[0.2em] text-primary">{role}</p>
+      <h3
+        className={`mt-3 font-semibold tracking-tight ${
+          featured ? "text-2xl md:text-3xl" : "text-lg"
+        }`}
+      >
+        {name}
+      </h3>
+      <p
+        className={`mt-4 flex-1 leading-relaxed text-muted-foreground ${
+          featured ? "text-lg" : "text-sm"
+        }`}
+      >
+        {text}
+      </p>
+    </div>
+  );
+}
 
 function Index() {
   return (
@@ -153,7 +205,7 @@ function Index() {
         </div>
       </section>
 
-      {/* Team / Founder */}
+      {/* Team */}
       <section id="team" className="border-b border-border/60">
         <div className="mx-auto max-w-6xl px-6 py-24">
           <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground">Команда</p>
@@ -161,21 +213,34 @@ function Index() {
             10 высококлассных специалистов — аналитики и программисты.
           </h2>
 
-          <div className="mt-16 grid gap-12 rounded-2xl border border-border bg-card p-8 md:grid-cols-[auto_1fr] md:p-12">
-            <div className="flex h-32 w-32 items-center justify-center rounded-full bg-accent text-3xl font-semibold text-accent-foreground md:h-40 md:w-40 md:text-4xl">
-              РСВ
-            </div>
-            <div>
-              <p className="text-xs uppercase tracking-[0.2em] text-primary">
-                Ключевой эксперт · Собственник
-              </p>
-              <h3 className="mt-3 text-2xl font-semibold tracking-tight md:text-3xl">
-                Райс Сергей Владимирович
-              </h3>
-              <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
-                Человек, который знает в 1С всё. Решает задачи, с которыми не справились другие.
-                Личное участие в сложных проектах — гарантия результата.
-              </p>
+          <div className="mt-16 space-y-6">
+            <TeamMemberCard
+              icon={Briefcase}
+              role="Ключевой эксперт · Директор"
+              name="Райс Сергей Владимирович"
+              text="Человек, который знает в 1С всё. Решает задачи, с которыми не справились другие. Личное участие в сложных проектах — гарантия результата."
+              featured
+            />
+
+            <div className="grid gap-6 md:grid-cols-3">
+              <TeamMemberCard
+                icon={Layers}
+                role="Эксперт по 1С ERP"
+                name="Мехоношин Евгений Николаевич"
+                text="Точно знает, как сделать лучше: от архитектуры учёта до отраслевых сценариев в 1С ERP."
+              />
+              <TeamMemberCard
+                icon={Wrench}
+                role="Технический эксперт"
+                name="Порсев Иван Александрович"
+                text="Решает вопросы по 1С и не только по 1С: интеграции, инфраструктура, нестандартные задачи."
+              />
+              <TeamMemberCard
+                icon={Bot}
+                role="Специалист в области ИИ"
+                name="Бормотов Илья Михайлович"
+                text="Приучает агентов ИИ работать с задачами 1С — ускоряет анализ, разработку и поддержку."
+              />
             </div>
           </div>
         </div>
