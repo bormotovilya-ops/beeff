@@ -21,7 +21,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "ООО «БИФ» — 15 лет внедрения информационных систем 1С в Перми и Пермском крае. Команда из 10 специалистов. Решаем задачи любой сложности.",
+          "ООО «БИФ» — 15 лет внедрения информационных систем 1С в Перми и Пермском крае. Команда высококлассных специалистов. Решаем задачи любой сложности.",
       },
       { property: "og:title", content: "Beeff — Внедрение 1С в Перми" },
       {
@@ -52,10 +52,12 @@ function TeamMemberCard({
         featured ? "border-primary/30 bg-secondary/20 md:p-12" : ""
       }`}
     >
-      <Icon className="h-6 w-6 text-primary" strokeWidth={1.5} />
-      <p className="mt-6 text-xs uppercase tracking-[0.2em] text-primary">{role}</p>
+      <div className="flex items-center gap-3">
+        <Icon className="h-6 w-6 shrink-0 text-primary" strokeWidth={1.5} />
+        <p className="text-xs uppercase leading-snug tracking-[0.2em] text-primary">{role}</p>
+      </div>
       <h3
-        className={`mt-3 font-semibold tracking-tight ${
+        className={`mt-5 font-semibold tracking-tight ${
           featured ? "text-2xl md:text-3xl" : "text-lg"
         }`}
       >
@@ -210,7 +212,7 @@ function Index() {
         <div className="mx-auto max-w-6xl px-6 py-24">
           <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground">Команда</p>
           <h2 className="mt-4 max-w-2xl text-3xl font-semibold tracking-tight md:text-4xl">
-            10 высококлассных специалистов — аналитики и программисты.
+            Высококлассные специалисты — аналитики и программисты, в том числе:
           </h2>
 
           <div className="mt-16 space-y-6">
@@ -225,21 +227,21 @@ function Index() {
             <div className="grid gap-6 md:grid-cols-3">
               <TeamMemberCard
                 icon={Layers}
-                role="Эксперт по 1С ERP"
+                role="эксперт по 1С ERP"
                 name="Мехоношин Евгений Николаевич"
-                text="Точно знает, как сделать лучше: от архитектуры учёта до отраслевых сценариев в 1С ERP."
+                text="точно знает как сделать лучше."
               />
               <TeamMemberCard
                 icon={Wrench}
-                role="Технический эксперт"
+                role="технический эксперт"
                 name="Порсев Иван Александрович"
-                text="Решает вопросы по 1С и не только по 1С: интеграции, инфраструктура, нестандартные задачи."
+                text="решает вопросы по 1с и не только по 1с."
               />
               <TeamMemberCard
                 icon={Bot}
-                role="Специалист в области ИИ"
+                role="специалист в области ИИ"
                 name="Бормотов Илья Михайлович"
-                text="Приучает агентов ИИ работать с задачами 1С — ускоряет анализ, разработку и поддержку."
+                text="приучает агентов ИИ для работы с задачами 1с."
               />
             </div>
           </div>
