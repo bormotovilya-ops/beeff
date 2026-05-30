@@ -141,4 +141,20 @@
     background-color: var(--color-background);
     color: var(--color-foreground);
   }
+
+  @media (max-width: 767px) {
+    html {
+      font-size: 17px;
+    }
+  }
+
+  [id] {
+    scroll-margin-top: 8.5rem;
+  }
+
+  @media (min-width: 768px) {
+    [id] {
+      scroll-margin-top: 5.5rem;
+    }
+  }
 }
