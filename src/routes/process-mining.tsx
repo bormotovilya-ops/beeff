@@ -134,6 +134,24 @@ function ProcessMiningPage() {
   const [manualVideoMode, setManualVideoMode] = useState(false);
   const businessClients = CLIENT_LOGOS.filter((client) => client.category === "business");
   const publicClients = CLIENT_LOGOS.filter((client) => client.category === "public");
+  const artifactRows = [
+    [
+      "Карта фактического процесса",
+      "Показывает, где процесс отклоняется от ожидаемого маршрута.",
+    ],
+    [
+      "KPI по этапам",
+      "Дает количественную оценку задержек, потерь и вариативности.",
+    ],
+    [
+      "Рейтинг узких мест",
+      "Фокусирует внимание на точках с максимальным влиянием на сроки и результат.",
+    ],
+    [
+      "План улучшений",
+      "Формирует понятный следующий шаг: что менять в первую очередь и почему.",
+    ],
+  ] as const;
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -474,8 +492,17 @@ function ProcessMiningPage() {
             ))}
           </div>
 
-          <div className="mt-12 overflow-x-auto rounded-lg border border-border bg-background">
-            <table className="min-w-[640px] w-full text-left text-sm">
+          <div className="mt-8 grid gap-3 md:hidden">
+            {artifactRows.map(([item, value]) => (
+              <article key={item} className="rounded-lg border border-border bg-background p-4">
+                <h3 className="text-sm font-semibold">{item}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{value}</p>
+              </article>
+            ))}
+          </div>
+
+          <div className="mt-12 hidden overflow-hidden rounded-lg border border-border bg-background md:block">
+            <table className="w-full text-left text-sm">
               <thead className="bg-muted/50 text-xs uppercase tracking-wider text-muted-foreground">
                 <tr>
                   <th className="p-4 font-medium">Артефакт</th>
@@ -483,24 +510,7 @@ function ProcessMiningPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
-                {[
-                  [
-                    "Карта фактического процесса",
-                    "Показывает, где процесс отклоняется от ожидаемого маршрута.",
-                  ],
-                  [
-                    "KPI по этапам",
-                    "Дает количественную оценку задержек, потерь и вариативности.",
-                  ],
-                  [
-                    "Рейтинг узких мест",
-                    "Фокусирует внимание на точках с максимальным влиянием на сроки и результат.",
-                  ],
-                  [
-                    "План улучшений",
-                    "Формирует понятный следующий шаг: что менять в первую очередь и почему.",
-                  ],
-                ].map(([item, value]) => (
+                {artifactRows.map(([item, value]) => (
                   <tr key={item} className="align-top">
                     <td className="p-4 font-medium">{item}</td>
                     <td className="p-4 text-muted-foreground">{value}</td>
@@ -700,7 +710,30 @@ function ProcessMiningPage() {
           </h2>
 
           <div className="mt-6 p-2 md:p-3">
-            <div className="logo-cloud-wrap relative overflow-hidden">
+            <div className="space-y-6 md:hidden">
+              <div>
+                <h3 className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                  Бизнес и промышленность
+                </h3>
+                <div className="mt-3 grid gap-2">
+                  {businessClients.map((client) => (
+                    <ClientLogoCard key={`mobile-business-${client.domain}`} client={client} />
+                  ))}
+                </div>
+              </div>
+              <div>
+                <h3 className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                  Государственный сектор
+                </h3>
+                <div className="mt-3 grid gap-2">
+                  {publicClients.map((client) => (
+                    <ClientLogoCard key={`mobile-public-${client.domain}`} client={client} />
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="logo-cloud-wrap relative hidden overflow-hidden md:block">
               <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-20 bg-gradient-to-r from-background to-transparent" />
               <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-background to-transparent" />
               <div className="space-y-4">
@@ -725,8 +758,13 @@ function ProcessMiningPage() {
               </div>
             </div>
 
-            <div className="mt-4 text-xs text-muted-foreground">
-              Верхняя и нижняя ленты показывают разные группы клиентов. По клику на карточку откроется сайт клиента в новой вкладке.
+            <div className="mt-4 text-xs text-muted-foreground md:hidden">
+              На мобильной версии клиенты показаны списком для лучшей читаемости. По
+              клику на карточку откроется сайт клиента в новой вкладке.
+            </div>
+            <div className="mt-4 hidden text-xs text-muted-foreground md:block">
+              Верхняя и нижняя ленты показывают разные группы клиентов. По клику на
+              карточку откроется сайт клиента в новой вкладке.
             </div>
           </div>
         </div>
