@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   Mail,
   Phone,
@@ -83,23 +83,29 @@ function Index() {
   return (
     <div className="min-h-screen bg-background text-foreground antialiased">
       {/* Nav */}
-      <header className="sticky top-0 z-50 border-b border-border/60 bg-background/95 backdrop-blur-md">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-6 sm:py-5">
-          <a href="#top" className="flex min-w-0 items-baseline gap-2">
-            <span className="text-3xl font-bold tracking-tight sm:text-2xl">Beeff</span>
-            <span className="hidden text-sm uppercase tracking-[0.2em] text-muted-foreground sm:inline md:text-xs">
-              1С · Пермь
+      <header className="sticky top-0 z-50 border-b border-border/60 bg-background/92 shadow-[0_8px_30px_-25px_rgba(0,0,0,0.35)] backdrop-blur-xl">
+        <div className="h-0.5 bg-primary/80" />
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-4 sm:gap-4 sm:px-6 sm:py-4">
+          <a href="#top" className="flex min-w-0 flex-col items-start">
+            <span className="text-[1.65rem] font-black leading-none tracking-tight text-foreground sm:text-[1.9rem]">
+              БИФ
+            </span>
+            <span className="mt-1 hidden text-[10px] uppercase tracking-[0.24em] text-muted-foreground sm:block sm:text-[11px]">
+              Интегратор 1С · Пермь
             </span>
           </a>
           <nav className="hidden items-center gap-8 text-sm text-muted-foreground md:flex">
             <a href="#about" className="hover:text-foreground transition-colors">О компании</a>
             <a href="#expertise" className="hover:text-foreground transition-colors">Экспертиза</a>
+            <Link to="/process-mining" className="hover:text-foreground transition-colors">
+              Анализ процессов
+            </Link>
             <a href="#team" className="hover:text-foreground transition-colors">Команда</a>
             <a href="#contacts" className="hover:text-foreground transition-colors">Контакты</a>
           </nav>
           <a
             href="#contacts"
-            className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-primary px-5 py-3 text-base font-medium text-primary-foreground transition-opacity hover:opacity-90 md:rounded-md md:px-4 md:py-2 md:text-sm"
+            className="inline-flex shrink-0 items-center gap-2 rounded-md border border-primary/30 bg-primary px-5 py-3 text-base font-medium text-primary-foreground shadow-sm shadow-primary/20 transition-all hover:-translate-y-0.5 hover:opacity-95 md:px-4 md:py-2 md:text-sm"
           >
             Связаться
           </a>
@@ -108,20 +114,33 @@ function Index() {
           className="mx-auto flex max-w-6xl gap-1 overflow-x-auto border-t border-border/40 px-4 py-3 text-base text-muted-foreground [-ms-overflow-style:none] [scrollbar-width:none] md:hidden [&::-webkit-scrollbar]:hidden"
           aria-label="Разделы сайта"
         >
-          {[
-            ["#about", "О компании"],
-            ["#expertise", "Экспертиза"],
-            ["#team", "Команда"],
-            ["#contacts", "Контакты"],
-          ].map(([href, label]) => (
-            <a
-              key={href}
-              href={href}
-              className="shrink-0 rounded-lg px-4 py-2.5 font-medium transition-colors hover:bg-secondary hover:text-foreground"
-            >
-              {label}
-            </a>
-          ))}
+          {(
+            [
+              { href: "#about", label: "О компании" },
+              { href: "#expertise", label: "Экспертиза" },
+              { href: "/process-mining", label: "Анализ процессов", route: true },
+              { href: "#team", label: "Команда" },
+              { href: "#contacts", label: "Контакты" },
+            ] as const
+          ).map((item) =>
+            "route" in item ? (
+              <Link
+                key={item.href}
+                to={item.href}
+                className="shrink-0 rounded-lg px-4 py-2.5 font-medium transition-colors hover:bg-secondary hover:text-foreground"
+              >
+                {item.label}
+              </Link>
+            ) : (
+              <a
+                key={item.href}
+                href={item.href}
+                className="shrink-0 rounded-lg px-4 py-2.5 font-medium transition-colors hover:bg-secondary hover:text-foreground"
+              >
+                {item.label}
+              </a>
+            ),
+          )}
         </nav>
       </header>
 
