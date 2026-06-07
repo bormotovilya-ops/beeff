@@ -8,13 +8,16 @@ import {
   Brain,
   Layers,
   CheckCircle2,
-  Building2,
   Shield,
-  UserCheck,
   Clock3,
   Briefcase,
   Wrench,
   Bot,
+  GitBranch,
+  Route as RouteIcon,
+  Target,
+  Database,
+  BarChart3,
   type LucideIcon,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
@@ -134,23 +137,11 @@ function ProcessMiningPage() {
   const [manualVideoMode, setManualVideoMode] = useState(false);
   const businessClients = CLIENT_LOGOS.filter((client) => client.category === "business");
   const publicClients = CLIENT_LOGOS.filter((client) => client.category === "public");
-  const artifactRows = [
-    [
-      "Карта фактического процесса",
-      "Показывает, где процесс отклоняется от ожидаемого маршрута.",
-    ],
-    [
-      "KPI по этапам",
-      "Дает количественную оценку задержек, потерь и вариативности.",
-    ],
-    [
-      "Рейтинг узких мест",
-      "Фокусирует внимание на точках с максимальным влиянием на сроки и результат.",
-    ],
-    [
-      "План улучшений",
-      "Формирует понятный следующий шаг: что менять в первую очередь и почему.",
-    ],
+  const deliverables = [
+    "Карта фактического процесса в BPMN с вариантами прохождения.",
+    "Дашборд PM-метрик по этапам, ролям и подразделениям.",
+    "Рейтинг узких мест с оценкой влияния на cycle time.",
+    "План улучшений с приоритетами, владельцами и ожидаемым эффектом.",
   ] as const;
 
   useEffect(() => {
@@ -378,8 +369,8 @@ function ProcessMiningPage() {
                   "Рабочий цикл без спешки: 4-8 недель на качественный анализ, проверку выводов и согласование плана действий.",
                 ],
                 [
-                  "Результат",
-                  "Карта процесса, KPI, перечень узких мест и план улучшений с приоритетами.",
+                  "Критерий успеха",
+                  "Согласованы 3-5 инициатив с владельцами, сроками и ожидаемым эффектом.",
                 ],
                 [
                   "ИИ (опционально)",
@@ -463,7 +454,7 @@ function ProcessMiningPage() {
             Объем анализа
           </p>
           <h2 className="mt-4 max-w-3xl text-3xl font-semibold tracking-tight md:text-4xl">
-            Что входит в этап анализа и что получает заказчик.
+            Что входит в этап анализа и как подтверждаем эффект.
           </h2>
 
           <div className="mt-10 grid gap-px overflow-hidden rounded-lg border border-border bg-border md:grid-cols-3">
@@ -480,8 +471,8 @@ function ProcessMiningPage() {
               },
               {
                 icon: CheckCircle2,
-                title: "Что передаём",
-                text: "Итоговую карту процесса, свод KPI и список практических мер: регламент, настройка или доработка.",
+                title: "Как подтверждаем эффект",
+                text: "Показываем влияние узких мест на цикл и стоимость, а также фиксируем приоритет мер с ожидаемым эффектом.",
               },
             ].map(({ icon: Icon, title, text }) => (
               <article key={title} className="bg-background p-8">
@@ -492,33 +483,112 @@ function ProcessMiningPage() {
             ))}
           </div>
 
-          <div className="mt-8 grid gap-3 md:hidden">
-            {artifactRows.map(([item, value]) => (
-              <article key={item} className="rounded-lg border border-border bg-background p-4">
-                <h3 className="text-sm font-semibold">{item}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{value}</p>
+          <div className="mt-10 rounded-lg border border-border bg-muted/20 p-6 md:p-8">
+            <h3 className="text-sm font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+              Итоговые материалы для руководства
+            </h3>
+            <ul className="mt-5 space-y-3 text-sm leading-relaxed text-muted-foreground">
+              {deliverables.map((item) => (
+                <li key={item} className="flex gap-2">
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section className="reveal-section border-b border-border/60 bg-muted/20">
+        <div className="mx-auto max-w-6xl px-6 py-16">
+          <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground">
+            Метод Process Mining
+          </p>
+          <h2 className="mt-4 max-w-4xl text-3xl font-semibold tracking-tight md:text-4xl">
+            От event log в 1С до управленческих решений — end-to-end.
+          </h2>
+          <p className="mt-4 max-w-4xl text-base leading-relaxed text-muted-foreground">
+            Работаем по industry-практике Process Mining: восстанавливаем фактическую
+            модель процесса, проверяем соответствие регламенту и формируем сценарии
+            улучшения. Не заменяем отчетность 1С, а строим аналитику на цифровых следах
+            каждого кейса.
+          </p>
+
+          <div className="mt-10 grid gap-4 md:grid-cols-3">
+            {[
+              {
+                icon: GitBranch,
+                title: "Process Discovery",
+                text: "Автоматически восстанавливаем карту процесса из event log: статусы, переходы, согласования, возвраты.",
+              },
+              {
+                icon: RouteIcon,
+                title: "Conformance Checking",
+                text: "Сравниваем фактический маршрут с эталонной BPMN и регламентом, считаем долю отклонений и типовые нарушения.",
+              },
+              {
+                icon: Target,
+                title: "Process Enhancement",
+                text: "Приоритизируем узкие места, сравниваем варианты прохождения и формируем план улучшений с оценкой эффекта.",
+              },
+            ].map(({ icon: Icon, title, text }) => (
+              <article key={title} className="rounded-lg border border-border bg-background p-6">
+                <Icon className="h-6 w-6 text-primary" strokeWidth={1.6} />
+                <h3 className="mt-4 text-lg font-semibold">{title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{text}</p>
               </article>
             ))}
           </div>
 
-          <div className="mt-12 hidden overflow-hidden rounded-lg border border-border bg-background md:block">
-            <table className="w-full text-left text-sm">
-              <thead className="bg-muted/50 text-xs uppercase tracking-wider text-muted-foreground">
-                <tr>
-                  <th className="p-4 font-medium">Артефакт</th>
-                  <th className="p-4 font-medium">Смысл для руководителя</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
-                {artifactRows.map(([item, value]) => (
-                  <tr key={item} className="align-top">
-                    <td className="p-4 font-medium">{item}</td>
-                    <td className="p-4 text-muted-foreground">{value}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div className="mt-10 grid gap-6 lg:grid-cols-2">
+            <div className="rounded-lg border border-border bg-background p-6 md:p-7">
+              <div className="flex items-center gap-3">
+                <Database className="h-5 w-5 text-primary" strokeWidth={1.7} />
+                <h3 className="text-lg font-semibold">Как готовим данные из 1С</h3>
+              </div>
+              <ol className="mt-5 space-y-3 text-sm leading-relaxed text-muted-foreground">
+                <li>1. Формируем event log: case ID, activity, timestamp, resource.</li>
+                <li>2. Сопоставляем события с этапами процесса и ролями исполнителей.</li>
+                <li>3. Очищаем и валидируем данные: дубли, разрывы цепочек, аномалии.</li>
+                <li>4. Строим process model и рассчитываем PM-метрики по каждому варианту.</li>
+              </ol>
+            </div>
+
+            <div className="rounded-lg border border-border bg-background p-6 md:p-7">
+              <div className="flex items-center gap-3">
+                <BarChart3 className="h-5 w-5 text-primary" strokeWidth={1.7} />
+                <h3 className="text-lg font-semibold">Метрики экспертного анализа</h3>
+              </div>
+              <ul className="mt-5 space-y-3 text-sm leading-relaxed text-muted-foreground">
+                <li className="flex gap-2">
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                  Cycle time и waiting time — где теряются часы и дни в цикле.
+                </li>
+                <li className="flex gap-2">
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                  Rework rate — доля возвратов, повторных согласований и петель rework.
+                </li>
+                <li className="flex gap-2">
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                  Conformance rate — насколько процесс следует регламенту на практике.
+                </li>
+                <li className="flex gap-2">
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                  Variant analysis — какие маршруты доминируют и какие дают максимальные потери.
+                </li>
+                <li className="flex gap-2">
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                  Bottleneck ranking — узкие места с количественной оценкой влияния на throughput.
+                </li>
+              </ul>
+            </div>
           </div>
+
+          <p className="mt-8 max-w-4xl text-base leading-relaxed text-foreground/90">
+            Это тот же подход, который используют enterprise-платформы Process Mining,
+            но адаптированный под ваш контур 1С: без лишней инфраструктуры, с фокусом на
+            проверяемый результат для руководства.
+          </p>
         </div>
       </section>
 
@@ -539,7 +609,7 @@ function ProcessMiningPage() {
               <div className="rounded-lg border border-primary/20 bg-background p-7">
                 <div className="flex items-center gap-3">
                   <Brain className="h-5 w-5 text-primary" strokeWidth={1.7} />
-                  <h3 className="text-lg font-semibold">Что получаете</h3>
+                  <h3 className="text-lg font-semibold">Как ИИ помогает руководителю</h3>
                 </div>
                 <ul className="mt-5 space-y-3 text-sm leading-relaxed text-muted-foreground">
                   <li className="flex gap-2">
@@ -581,29 +651,6 @@ function ProcessMiningPage() {
                 Демонстрация ИИ-интерфейса на основе данных анализа процессов.
               </figcaption>
             </figure>
-          </div>
-        </div>
-      </section>
-
-      <section className="reveal-section border-b border-border/60">
-        <div className="mx-auto max-w-6xl px-6 py-16">
-          <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground">
-            Итоговые материалы
-          </p>
-          <h2 className="mt-4 max-w-3xl text-3xl font-semibold tracking-tight md:text-4xl">
-            Что получает руководство по завершении этапа анализа.
-          </h2>
-          <div className="mt-10 grid gap-4 md:grid-cols-3">
-            {[
-              ["Карта процесса", "Фактический маршрут документов и отклонения от регламента."],
-              ["Приоритеты действий", "Перечень узких мест с оценкой влияния и очередностью внедрения."],
-              ["План изменений", "Конкретные шаги по настройкам, регламентам и организационным действиям."],
-            ].map(([title, text]) => (
-              <div key={title} className="rounded-lg border border-border bg-background p-6">
-                <h3 className="text-base font-semibold">{title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{text}</p>
-              </div>
-            ))}
           </div>
         </div>
       </section>
