@@ -67,7 +67,7 @@ export const Route = createFileRoute("/process-mining")({
       {
         name: "description",
         content:
-          "Краткое коммерческое предложение: оценка эффективности процессов в существующих системах 1С, сроки, артефакты результата и формат внедрения.",
+          "Оценка эффективности процессов в существующих системах 1С: сроки, артефакты результата и формат внедрения.",
       },
       { property: "og:title", content: "Анализ эффективности процессов в 1С | БИФ" },
       {
@@ -324,7 +324,7 @@ function ProcessMiningPage() {
             </h1>
             <div className="mt-4 h-1.5 w-20 rounded-full bg-primary/80" />
             <p className="mt-3 text-base font-medium text-foreground/90 md:max-w-3xl">
-              Коммерческое предложение для <span className="text-primary">ЛУКОЙЛ Пермь</span>.
+              Предложение по анализу для <span className="text-primary">ЛУКОЙЛ Пермь</span>.
             </p>
             <p className="mt-4 max-w-3xl text-base leading-relaxed text-muted-foreground">
               По цифровым следам в 1С показываем реальную картину работы: где задержки,
@@ -790,6 +790,7 @@ function ProcessMiningPage() {
                       key={`top-${client.domain}-${index}`}
                       client={client}
                       minWidthClass="min-w-[230px]"
+                      eagerLoad
                     />
                   ))}
                 </div>
@@ -799,6 +800,7 @@ function ProcessMiningPage() {
                       key={`bottom-${client.domain}-${index}`}
                       client={client}
                       minWidthClass="min-w-[230px]"
+                      eagerLoad
                     />
                   ))}
                 </div>
@@ -839,11 +841,11 @@ function ProcessMiningPage() {
                 <span>rice@beeff.ru</span>
               </a>
               <a
-                href="tel:83422719655"
+                href="tel:+79991237788"
                 className="flex items-center gap-4 border-b border-primary-foreground/20 pb-6 transition-opacity hover:opacity-80"
               >
                 <Phone className="h-5 w-5 shrink-0 opacity-70" strokeWidth={1.5} />
-                <span>8 (342) 271-96-55</span>
+                <span>+7-999-123-77-88</span>
               </a>
               <div className="flex items-start gap-4">
                 <MapPin className="mt-1 h-5 w-5 shrink-0 opacity-70" strokeWidth={1.5} />
@@ -927,18 +929,26 @@ function ProcessMiningPage() {
 function ClientLogoCard({
   client,
   minWidthClass,
+  eagerLoad = false,
 }: {
   client: (typeof CLIENT_LOGOS)[number];
   minWidthClass?: string;
+  eagerLoad?: boolean;
 }) {
   const { name, domain, website, logo } = client;
   const href = website ?? `https://${domain}`;
-  const primarySrc = logo ?? `https://logo.clearbit.com/${domain}`;
-  const [logoSrc, setLogoSrc] = useState(primarySrc);
+  const faviconSrc = `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
   const clearbitSrc = `https://logo.clearbit.com/${domain}`;
-  const fallbackSrc = `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
+  const primarySrc = logo ?? faviconSrc;
+  const [logoSrc, setLogoSrc] = useState(primarySrc);
   const [fallbackStep, setFallbackStep] = useState<0 | 1 | 2>(0);
   const [showLogo, setShowLogo] = useState(true);
+  const initials = name
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((part) => part[0])
+    .join("")
+    .toUpperCase();
 
   return (
     <a
@@ -947,26 +957,34 @@ function ClientLogoCard({
       rel="noreferrer"
       className={`flex items-center gap-3 rounded-md px-4 py-3 transition-colors hover:bg-muted/40 ${minWidthClass ?? ""}`}
     >
-      {showLogo && (
+      {showLogo ? (
         <img
           src={logoSrc}
           alt={`Логотип клиента: ${name}`}
           className="h-9 w-9 shrink-0 rounded-sm object-contain"
-          loading="lazy"
+          loading={eagerLoad ? "eager" : "lazy"}
+          decoding="async"
           onError={() => {
-            if (fallbackStep === 0 && primarySrc !== clearbitSrc) {
+            if (fallbackStep === 0 && logoSrc !== clearbitSrc) {
               setFallbackStep(1);
               setLogoSrc(clearbitSrc);
               return;
             }
-            if (fallbackStep <= 1) {
+            if (fallbackStep <= 1 && logoSrc !== faviconSrc) {
               setFallbackStep(2);
-              setLogoSrc(fallbackSrc);
+              setLogoSrc(faviconSrc);
               return;
             }
             setShowLogo(false);
           }}
         />
+      ) : (
+        <span
+          aria-hidden
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-sm bg-primary/10 text-[11px] font-semibold text-primary"
+        >
+          {initials}
+        </span>
       )}
       <span className="text-sm font-medium leading-snug">{name}</span>
     </a>
@@ -1000,8 +1018,8 @@ function SiteHeader() {
 
 function ContactStartCard() {
   const email = "rice@beeff.ru";
-  const phoneHref = "tel:+73422719655";
-  const phoneLabel = "8 (342) 271-96-55";
+  const phoneHref = "tel:+79991237788";
+  const phoneLabel = "+7-999-123-77-88";
   const subject = encodeURIComponent("Обсуждение предложения по анализу процессов 1С");
   const body = encodeURIComponent(
     "Добрый день!\nГотовы обсудить предложение по анализу процессов в 1С.\nПросьба предложить удобные слоты для встречи.",
