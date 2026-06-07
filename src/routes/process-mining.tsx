@@ -324,7 +324,7 @@ function ProcessMiningPage() {
             </h1>
             <div className="mt-4 h-1.5 w-20 rounded-full bg-primary/80" />
             <p className="mt-3 text-base font-medium text-foreground/90 md:max-w-3xl">
-              Предложение по анализу для <span className="text-primary">ЛУКОЙЛ Пермь</span>.
+              Для компаний, которым важны прозрачность процессов и измеримый результат в 1С.
             </p>
             <p className="mt-4 max-w-3xl text-base leading-relaxed text-muted-foreground">
               По цифровым следам в 1С показываем реальную картину работы: где задержки,
